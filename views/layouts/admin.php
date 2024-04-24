@@ -40,6 +40,7 @@ AppAsset::register($this);
           'items' => [
               ['label' => 'Home', 'url' => ['/main/index']],
               ['label' => 'Products', 'url' => ['/product/index']],
+              ['label' => 'Logout', 'url' => ['/user/logout']],
           ],
       ]);
 

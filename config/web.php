@@ -51,6 +51,7 @@ $config = [
                 '/' => 'main/index',
                 'product/<id:\d+>' => 'main/view',
                 '/admin' => 'product/index',
+                'login' => 'user/login',
             ],
         ],
     ],

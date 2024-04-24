@@ -23,6 +23,9 @@ class ProductController extends BaseController
      */
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return $this->redirect('login');
+        }
         $searchModel = new ProductSearch();
         $dataProvider = $searchModel->search($this->request->queryParams);
 
@@ -103,7 +106,7 @@ class ProductController extends BaseController
             $result  = $model->save();
             $this->setMessage($result, 'edit');
             if ($result) {
-                return $this->redirect(['view', 'id' => $model->id])
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
                 return $result ?  : $this->goBack();
             }
