@@ -8,6 +8,7 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
+use app\models\SignupForm;
 
 class UserController extends Controller
 {
@@ -51,6 +52,30 @@ class UserController extends Controller
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
+    }
+
+    public function actionSignup()
+    {
+        if (!Yii::$app->user->isGuest) return $this->goHome();
+        // $this->setMeta('Регистрация');
+
+        $model = new SignupForm();
+
+        if (Yii::$app->request->isGet) {
+            return $this->render('signup', compact('model'));
+        }
+
+        $model->load(Yii::$app->request->post());
+        if ($model->validate()) {
+            $user = new User();
+            $user->login = $model->login;
+            $user->password = Yii::$app->security->generatePasswordHash($model->password);
+            if ($user->save()) {
+                Yii::$app->user->login($user);
+                Yii::$app->session->setFlash('success', 'Вы успешно зарегестрированы. Авторизуйтесь');
+                $this->redirect('login');
+            }
+        }
     }
 
     /**
