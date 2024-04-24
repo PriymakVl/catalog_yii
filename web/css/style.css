@@ -1,0 +1,65 @@
+@import url('https://fonts.googleapis.com/css?family=Fredoka+One&display=swap');
+
+h1 {
+  text-align: center;
+}
+
+.grid {
+  display: grid;
+  /* grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); */
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 20px;
+  align-items: stretch;
+}
+
+.card {
+  /* height: 425px; */
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 10px;
+  box-shadow: 2px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+
+.card img {
+  width: 100%;
+}
+
+.grid .text {
+  padding: 20px;
+}
+
+.card h3 {
+  font-size: 1.3rem;
+  font-family: 'Fredoka One', cursive;
+}
+
+.card h3 a {
+  color: #000;
+}
+
+.card h3 a:hover {
+  color: #0069d9;
+}
+
+.card .price {
+  font-size: 1.5rem;
+}
+
+.card .price span {
+  font-weight: bold;
+  color: #32CD32;
+}
+
+.table td, .table th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.detail {
+  margin: 5px;
+  font-size: 18px;
+}
+
+.detail span {
+  font-weight: bold;
+}
