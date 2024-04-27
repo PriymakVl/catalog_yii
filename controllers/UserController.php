@@ -56,8 +56,7 @@ class UserController extends Controller
 
     public function actionSignup()
     {
-        if (!Yii::$app->user->isGuest) return $this->goHome();
-        // $this->setMeta('Регистрация');
+        if (!Yii::$app->user->isGuest) return $this->redirect('admin');
 
         $model = new SignupForm();
 
@@ -71,7 +70,7 @@ class UserController extends Controller
             $user->login = $model->login;
             $user->password = Yii::$app->security->generatePasswordHash($model->password);
             if ($user->save()) {
-                Yii::$app->user->login($user);
+                // Yii::$app->user->login($user);
                 Yii::$app->session->setFlash('success', 'Вы успешно зарегестрированы. Авторизуйтесь');
                 $this->redirect('login');
             }
