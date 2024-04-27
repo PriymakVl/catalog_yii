@@ -50,7 +50,7 @@ $config = [
             'rules' => [
                 '/' => 'main/index',
                 'product/<id:\d+>' => 'main/view',
-                '/admin' => 'product/index',
+                'admin' => 'product/index',
                 'login' => 'user/login',
             ],
         ],
