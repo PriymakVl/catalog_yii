@@ -56,8 +56,8 @@ class ProductController extends BaseController
         if (Yii::$app->request->isGet) {
             return $this->render('create', compact('model'));
         }
-       
         $model->load($this->request->post());
+        dd($model->name);
         $model->img = $this->uploadImage($model);
         
         // if ($model->save()) {
@@ -103,9 +103,9 @@ class ProductController extends BaseController
             $result  = $model->save();
             $this->setMessage($result, 'edit');
             if ($result) {
-                return $this->redirect(['view', 'id' => $model->id])
+                return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                return $result ?  : $this->goBack();
+                // return $result ?  : $this->goBack();
             }
         }
 
