@@ -1,48 +1,42 @@
 <?php
 
 use yii\helpers\Html;
-use yii\widgets\DetailView;
+use yii\helpers\Url;
 
-/** @var yii\web\View $this */
-/** @var app\models\Product $model */
-
-$this->title = $model->name;
-$this->params['breadcrumbs'][] = ['label' => 'Products', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
-\yii\web\YiiAsset::register($this);
+$this->title = 'Product';
 ?>
-<div class="product-view">
+<div class="container">
+	<h1 class="text-center"><?= $this->title ?></h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Delete', ['delete', 'id' => $model->id], [
-            'class' => 'btn btn-danger',
-            'data' => [
-                'confirm' => 'Are you sure you want to delete this item?',
-                'method' => 'post',
-            ],
-        ]) ?>
-    </p>
-
-    <?= DetailView::widget([
-        'model' => $model,
-        'attributes' => [
-            'id',
-            'name',
-            'price',
-            'description:ntext',
-            [
-                'attribute' => 'img', 
-                'format' => 'html',
-                'filter' => false,
-                'value' => function ($model) {
-                    return Html::img('/web/img/' . $model->img);
-                },
-            ],
-        ],
-    ]) ?>
-
+	<a href="/product/edit/<?= $product->id ?>" class="btn btn-primary btn-lg mb-3" role="button">Edit product</a>
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Value</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">Name</th>
+				<td><?= $product->name; ?></td>
+			</tr>
+            <tr>
+				<th scope="row">Price</th>
+				<td><?= $product->price; ?></td>
+			</tr>
+            <tr>
+				<th scope="row">Description</th>
+				<td><?= $product->description ?></td>
+			</tr>
+            <tr>
+				<th scope="row">Image</th>
+				<td>
+					<img src="/web/img/<?= $product->img; ?>" height="100px">
+				</td>
+			</tr>
+		</tbody>
+	</table>
 </div>
 

@@ -13,15 +13,8 @@ class MainController extends \yii\web\Controller
     {
         // $products = Product::find()->all();
         $query = Product::find();
-        $options = [
-            'totalCount' => $query->count(), 
-            'pageSize' => 2, 
-            'pageSizeParam' => false, 
-            "forcePageParam" => false,
-        ];
-        $p = new Pagination($options);
+        $p = new Pagination(['totalCount' => $query->count(), 'pageSize' = 3]);
         $products = $query->offset($p->offset)->limit($p->limit)->all();
-        // dd($p->totalCount);
         return $this->render('index', ['products' => $products, 'p' => $p]);
     }
 

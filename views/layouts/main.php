@@ -4,7 +4,7 @@
 /** @var string $content */
 
 use app\assets\AppAsset;
-// use app\widgets\Alert;
+use app\widgets\Alert;
 // use yii\bootstrap4\Breadcrumbs;
 use yii\bootstrap4\Html;
 use yii\bootstrap4\Nav;
@@ -38,13 +38,17 @@ AppAsset::register($this);
           'options' => ['class' => 'navbar-nav'],
           'items' => [
               ['label' => 'Home', 'url' => ['/main/index']],
-              ['label' => 'Cart', 'url' => ['/main/cart']],
+              ['label' => 'Cart', 'url' => ['/cart']],
               ['label' => 'Admin', 'url' => ['/product/index']],
           ],
       ]);
 
       NavBar::end();
   ?>
+</div>
+
+<div class="container">
+    <?= Alert::widget() ?>
 </div>
 
 <div class="container">

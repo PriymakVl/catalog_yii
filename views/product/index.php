@@ -1,56 +1,46 @@
 <?php
 
-use app\models\Product;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\grid\ActionColumn;
-use yii\grid\GridView;
 
-/** @var yii\web\View $this */
-/** @var app\models\ProductSearch $searchModel */
-/** @var yii\data\ActiveDataProvider $dataProvider */
-
+$num = 1;
 $this->title = 'Products';
-$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="product-index">
+<div class="container">
+	<h1 class="text-center"><?= $this->title ?></h1>
 
-    <h1><?= Html::encode($this->title) ?></h1>
-
-    <p>
-        <?= Html::a('Create Product', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
-
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
-
-    <?= GridView::widget([
-        'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
-        'columns' => [
-            ['class' => 'yii\grid\SerialColumn'],
-
-            'name',
-            [
-                'attribute' => 'price',
-                'filter' => false,
-            ],
-            [
-                'attribute' => 'img', 
-                'format' => 'html',
-                'filter' => false,
-                'value' => function ($model) {
-                    return Html::img('/web/img/' . $model->img, ['height' => '70px']);
-                },
-            ],
-    
-            [
-                'class' => ActionColumn::className(),
-                'urlCreator' => function ($action, Product $model, $key, $index, $column) {
-                    return Url::toRoute([$action, 'id' => $model->id]);
-                 }
-            ],
-        ],
-    ]); ?>
-
-
+	<a href="/product/add" class="btn btn-primary btn-lg mb-3" role="button">Add product</a>
+	
+	<table class="table table-bordered table-hover">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Name</th>
+				<th scope="col">Price</th>
+				<th scope="col">Image</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach ($products as $product): ?>
+			<tr>
+				<th scope="row"><? echo $num++; ?></th>
+				<td>
+					<a href="<?= Url::to('/product/view/' . $product->id) ?>"><? echo $product->name; ?></a>
+				</td>
+				<td><? echo $product->price; ?></td>
+				<td>
+					<img src="/web/img/<?= $product->img; ?>" height="100px">
+				</td>
+				<td>
+					<a href="/product/delete/<?= $product->id ?>"   class="btn btn-danger btn-sm">Delete</a>
+					<a href="/product/edit/<?= $product->id ?>" class="btn btn-primary btn-sm" >Edit</a>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+	<!-- pagination links -->
+	<? //include '../pagination.php'; ?>
 </div>
+

@@ -2,32 +2,26 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-
-/** @var yii\web\View $this */
-/** @var app\models\Product $model */
-/** @var yii\widgets\ActiveForm $form */
 ?>
+<div class="row">
+    <div class="col-7 mx-auto">
+        <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
-<div class="product-form">
-    <div class="row">
-        <div class="col-7 mx-auto">
-            <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
+        <?= $form->field($product, 'name')->textInput(['maxlength' => true]) ?>
 
-            <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
+        <?= $form->field($product, 'price')->textInput() ?>
 
-            <?= $form->field($model, 'price')->textInput() ?>
+        <?= $form->field($product, 'description')->textarea(['rows' => 6]) ?>
 
-            <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
+        <?= $form->field($product, 'img')->fileInput() ?>
 
-            <?= $form->field($model, 'img')->fileInput() ?>
-
-            <div class="form-group">
-                <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
-            </div>
-
-            <?php ActiveForm::end(); ?>
+        <div class="form-group">
+            <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
         </div>
+
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
+
 
 

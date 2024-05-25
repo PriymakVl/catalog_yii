@@ -4,71 +4,48 @@ namespace app\controllers;
 
 use Yii;
 use app\models\Product;
-use app\models\ProductSearch;
 use yii\web\NotFoundHttpException;
 use yii\web\UploadedFile;
 
-/**
- * ProductController implements the CRUD actions for Product model.
- */
 class ProductController extends BaseController
 {
     public $layout = 'admin';
 
-
-    /**
-     * Lists all Product models.
-     *
-     * @return string
-     */
     public function actionIndex()
     {
-        $searchModel = new ProductSearch();
-        $dataProvider = $searchModel->search($this->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        $products = Product::find()->all();
+        return $this->render('index', compact('products'));
     }
 
-    /**
-     * Displays a single Product model.
-     * @param int $id ID
-     * @return string
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionView($id)
     {
-        return $this->render('view', [
-            'model' => $this->findModel($id),
-        ]);
+        $product = Product::findOne($id);
+        return $this->render('view', compact('product'));
     }
 
-    /**
-     * Creates a new Product model.
-     * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return string|\yii\web\Response
-     */
-    public function actionCreate()
+    public function actionAdd()
     {
-        $model = new Product(['scenario' => 'create']);
+        $product = new Product(['scenario' => 'create']);
+
         if (Yii::$app->request->isGet) {
-            return $this->render('create', compact('model'));
+            return $this->render('add', compact('product'));
         }
-       
-        $model->load($this->request->post());
-        $model->img = $this->uploadImage($model);
+        $product->load($this->request->post());
+
+        $product->img = $this->uploadImage($product);
         
-        // if ($model->save()) {
-        //     Yii::$app->session->setFlash('success', 'Товар успешно добавлен!');
-        //     return $this->redirect(['view', 'id' => $model->id]);
-        // }
-        // Yii::$app->session->setFlash('error', 'Ошибка при добавлении товара!');
-        // return $this->goBack();
-        $result = $model->save();
-        $this->setMessage($result, 'add');
-        $result ? $this->redirect(['view', 'id' => $model->id]) : $this->goBack();
+        if ($product->save()) {
+            Yii::$app->session->setFlash('success', 'Товар успешно добавлен!');
+            // return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect('index');
+        }
+        Yii::$app->session->setFlash('error', 'Ошибка при добавлении товара!');
+        return $this->goBack();
+
+        // метод setMessage
+        // $result = $model->save();
+        // $this->setMessage($result, 'add');
+        // $result ? $this->redirect(['view', 'id' => $model->id]) : $this->goBack();
     }
 
     public function uploadImage($model) 
@@ -84,63 +61,39 @@ class ProductController extends BaseController
         return $this->goBack();
     }
 
-    /**
-     * Updates an existing Product model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param int $id ID
-     * @return string|\yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    public function actionUpdate($id)
+    public function actionEdit($id)
     {
-        $model = $this->findModel($id);
-        $model->scenario = 'update';
+        $product = Product::findOne($id);
+        $product->scenario = 'update';
 
-        if ($this->request->isPost) {
-            $model->load($this->request->post());
-            $filename = $this->uploadImage($model);
-            $model->img = $filename ? $filename : $model->img;
-            $result  = $model->save();
-            $this->setMessage($result, 'edit');
-            if ($result) {
-                return $this->redirect(['view', 'id' => $model->id])
-            } else {
-                return $result ?  : $this->goBack();
-            }
+        if ($this->request->isGet) {
+            return $this->render('edit', ['product' => $product]);
         }
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+        $product->load($this->request->post());
+        $filename = $this->uploadImage($product);
+        $product->img = $filename ? $filename : $product->img;
+        $result  = $product->save();
+        $this->setMessage($result, 'edit');
+        if ($result) {
+            // return $this->redirect(['view', 'id' => $product->id]);
+            return $this->redirect('/product/index');
+        } else {
+            return $this->goBack();
+        }
     }
 
-    /**
-     * Deletes an existing Product model.
-     * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param int $id ID
-     * @return \yii\web\Response
-     * @throws NotFoundHttpException if the model cannot be found
-     */
     public function actionDelete($id)
     {
-        $result = $this->findModel($id)->delete();
-        $this->setMessage($result, 'delete');
+        $result = Product::findOne($id)->delete();
+        if ($result) {
+            Yii::$app->session->setFlash('success', 'Товар успешно удален!');
+        } 
+        else {
+            Yii::$app->session->setFlash('error', 'Ошибка при удалении товара!');
+        }
+        // $this->setMessage($result, 'delete');
         $this->redirect(['index']);
     }
 
-    /**
-     * Finds the Product model based on its primary key value.
-     * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param int $id ID
-     * @return Product the loaded model
-     * @throws NotFoundHttpException if the model cannot be found
-     */
-    protected function findModel($id)
-    {
-        if (($model = Product::findOne(['id' => $id])) !== null) {
-            return $model;
-        }
-
-        throw new NotFoundHttpException('The requested page does not exist.');
-    }
 }
